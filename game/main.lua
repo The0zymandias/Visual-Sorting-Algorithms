@@ -1,8 +1,8 @@
 local sortingList = {}
-local config = {}
+local config
 local state
 local currentAlgorithmIndex = 0
-local minDT, nextDT
+local nextDT
 local algorithmData = require "algorithms"
 local algorithmCallback
 local currentIndex = {}
@@ -14,11 +14,53 @@ local startTime = 0
 local lastTime = "00:00.0"
 
 function love.load()
-  --print(math.log(2, 10))
   require "functions"
-  loadfile("config.lua", "t", config)()
+
+  -- default config values
+  config = {
+    -- rate of logic
+    fps = 30,
+
+    skipShuffle = true,
+
+    randomSeed = nil,
+
+    initState = 0,
+
+    showInfo = true,
+    showFPS = false,
+
+    -- might be broken
+    verifySort = false,
+
+    listLength = 50,
+
+    showSignificantIndex = true,
+
+    skipKey = "n",
+    changeOrderKey = "m",
+    increaseLenKey = ".",
+    decreaseLenKey = ",",
+    fpsKey = "v",
+    increaseFPSKey = "c",
+    decreaseFPSKey = "x",
+
+    -- solid, greyscale, or rainbow
+    -- greyscale is the only one that I'm confident works
+    listColor = "greyscale",
+
+    color = {
+      currentIndex = {255, 0, 0},
+      background = {127, 127, 127},
+      valid = {0, 255, 0}
+    },
+
+    --random or next
+    getNextAlgorithm = "random"
+
+  }
+  --loadfile("config.lua", "t", config)()
   state = config.initState
-  minDT = 1/config.fps
   math.randomseed(config.seed or os.time())
   sortingList = fillList(config.listLength)
   shuffleList(sortingList)
@@ -48,7 +90,6 @@ function love.keyreleased(key)
     else
       config.getNextAlgorithm = "random"
     end
-    print("Swapped method of choosing next algorithm to "..config.getNextAlgorithm)
   elseif key == config.increaseLenKey then
     config.listLength = math.max(config.listLength+1, 5)
   elseif key == config.decreaseLenKey then
@@ -57,17 +98,18 @@ function love.keyreleased(key)
     config.showFPS = not config.showFPS
   elseif key == config.increaseFPSKey then
     config.fps = config.fps + 5
-    minDT = 1/config.fps
+    print("Decreased 1/config.fps")
   elseif key == config.decreaseFPSKey then
     config.fps = math.max(5, config.fps-5)
-    minDT = 1/config.fps
+    print("Decreased 1/config.fps")
   elseif key == "escape" then
     love.event.quit()
   end
 end
 
 function love.update(dt)
-  nextDT = nextDT + minDT
+  nextDT = nextDT + 1/config.fps
+  print(1/config.fps)
 
   --while not love.keyboard.isDown("a") do function noop() end end
 
@@ -254,8 +296,8 @@ function love.draw()
     local sinceStart = math.floor((love.timer.getTime()-startTime)*10)/10
     sinceStart = formatTime(sinceStart)
     local str = "Len: "..#sortingList.." Base Len: "..config.listLength
-    if config.showFPS then str = str.." FPS: "..love.timer.getFPS() end
-    str = str.." Time: "..sinceStart.." Last Time: "..lastTime
+    if config.showFPS then str = str.." FPS: "..(config.fps) end
+    str = str.." Time: "..sinceStart.." Last Time: "..lastTime.. " (hold i to see options)"
     love.graphics.print(str, 5, 5)
   end
 

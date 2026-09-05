@@ -93,10 +93,12 @@ return {
     func = nil
   },
   ]]
+  --[[
   {
     name = "Approximate Sort",
     listMult = 1.5,
     filename = "approx",
     func = nil
   }
+  ]]
 }

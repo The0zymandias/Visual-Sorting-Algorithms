@@ -1,5 +1,5 @@
 -- rate of logic
-fps = 60
+fps = 30
 
 skipShuffle = true
 
