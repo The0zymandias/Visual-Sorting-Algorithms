@@ -298,11 +298,12 @@ function love.draw()
     local str = "Len: "..#sortingList.." Base Len: "..config.listLength
     if config.showFPS then str = str.." FPS: "..(config.fps) end
     str = str.." Time: "..sinceStart.." Last Time: "..lastTime.. " (hold i to see options)"
+    str = str .. "\nAlgorithm: "..love.window.getTitle()
     love.graphics.print(str, 5, 5)
   end
 
   if love.keyboard.isDown("i") then
-    local i = 15+5
+    local i = 15+5+5+5+5
     love.graphics.setColor(1, 1, 1)
     for k, v in pairs(config) do
       if string.find(string.lower(k), "key") then
@@ -310,9 +311,6 @@ function love.draw()
         if k == "changeOrderKey" then k = "changeAlgorithmOrderKey" end
         love.graphics.print(k..": "..v, 5, i)
         i = i + 15
-      -- fucking shit ugh 2 hacks added to make work
-      else 
-        love.graphics.print(love.window.getTitle(), 5, i)
       end
     end
   end
