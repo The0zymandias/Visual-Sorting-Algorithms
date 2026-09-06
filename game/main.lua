@@ -310,6 +310,9 @@ function love.draw()
         if k == "changeOrderKey" then k = "changeAlgorithmOrderKey" end
         love.graphics.print(k..": "..v, 5, i)
         i = i + 15
+      -- fucking shit ugh 2 hacks added to make work
+      else 
+        love.graphics.print(love.window.getTitle(), 5, i)
       end
     end
   end
