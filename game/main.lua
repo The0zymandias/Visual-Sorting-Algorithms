@@ -109,7 +109,7 @@ end
 
 function love.update(dt)
   nextDT = nextDT + 1/config.fps
-  print(1/config.fps)
+  --print(1/config.fps)
 
   --while not love.keyboard.isDown("a") do function noop() end end
 
@@ -306,6 +306,8 @@ function love.draw()
     love.graphics.setColor(1, 1, 1)
     for k, v in pairs(config) do
       if string.find(string.lower(k), "key") then
+        -- ugh no me gusta
+        if k == "changeOrderKey" then k = "changeAlgorithmOrderKey" end
         love.graphics.print(k..": "..v, 5, i)
         i = i + 15
       end
