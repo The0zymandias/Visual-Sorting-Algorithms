@@ -1,6 +1,6 @@
 if jit then
-  require "table.new"
-  require "table.clear"
+  table.new = (require "table.new") or table.new
+  table.clear = (require "table.clear") or table.clear
 end
 
 function fillList(length, t)
